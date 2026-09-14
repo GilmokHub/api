@@ -19,7 +19,7 @@ permissions:
   packages: write
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/api-repo
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/api
 
 jobs:
   build-and-push:
@@ -96,7 +96,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.GITOPS_TOKEN }}
-          repository: final-project-gilmok/deploy-repo
+          repository: GilmokHub/deploy
           event-type: update-image
           client-payload: '{"image_tag": "latest", "service_name": "api-server", "target": "${{ env.DEPLOY_TARGET }}"}'
 
@@ -105,6 +105,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.GITOPS_TOKEN }}
-          repository: final-project-gilmok/deploy-repo
+          repository: GilmokHub/deploy
           event-type: update-image
           client-payload: '{"image_tag": "latest-${{ env.DEPLOY_TARGET }}", "service_name": "frontend-server", "target": "${{ env.DEPLOY_TARGET }}"}'

@@ -73,7 +73,7 @@ public class SwaggerConfig {
                 .build();
     }
 
-    /** auth-repo OpenAPI 스펙을 가져와 병합 → default/public/admin 모든 그룹에 Auth 표시 */
+    /** auth OpenAPI 스펙을 가져와 병합 → default/public/admin 모든 그룹에 Auth 표시 */
     @Bean
     @Order(0)
     public GlobalOpenApiCustomizer mergeAuthOpenAPICustomizer() {
@@ -97,10 +97,10 @@ public class SwaggerConfig {
                     Paths merged = openApi.getPaths() != null ? openApi.getPaths() : new Paths();
                     paths.forEach((path, pathItem) -> merged.put(path, objectMapper.convertValue(pathItem, io.swagger.v3.oas.models.PathItem.class)));
                     openApi.setPaths(merged);
-                    log.info("Swagger: auth-repo 스펙 병합 완료 (paths {} 개)", paths.size());
+                    log.info("Swagger: auth 스펙 병합 완료 (paths {} 개)", paths.size());
                 }
             } catch (Exception e) {
-                log.debug("Swagger: auth-repo 스펙 병합 스킵 (auth.api-docs-url 미연결 등): {}", e.getMessage());
+                log.debug("Swagger: auth 스펙 병합 스킵 (auth.api-docs-url 미연결 등): {}", e.getMessage());
             }
         };
     }
