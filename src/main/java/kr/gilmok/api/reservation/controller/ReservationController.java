@@ -12,12 +12,12 @@ import kr.gilmok.api.reservation.dto.ReservationResponse;
 import kr.gilmok.api.reservation.service.ReservationService;
 import kr.gilmok.api.token.service.TokenService;
 import kr.gilmok.common.dto.ApiResponse;
-import kr.gilmok.common.security.CustomUserDetails;
+import kr.gilmok.common.dto.AuthUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import kr.gilmok.common.annotation.LoginUser;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class ReservationController {
     private final QueueService queueService;
     private final TokenService tokenService;
 
-    @Value("${app.admitted-ttl-seconds}")
+    @Value("${queue.admitted-ttl-seconds}")
     private long admittedTtlSeconds;
 
     @PostMapping
@@ -47,20 +47,20 @@ public class ReservationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "좌석 충돌 또는 상태 충돌")
     })
     public ApiResponse<ReservationResponse> create(
-            @AuthenticationPrincipal CustomUserDetails principal,
+            @LoginUser AuthUserDto principal,
             @Valid @RequestBody ReservationCreateRequest request,
             HttpServletResponse response) {
 
         // 1. 대기열 검증 (Service 호출 전 혹은 내부에서 수행 가능하지만 명시적으로 분리)
-        queueService.verifyQueueAccess(String.valueOf(request.eventId()), request.queueKey(), principal.user().id());
+        queueService.verifyQueueAccess(String.valueOf(request.eventId()), request.queueKey(), principal.id());
 
         // 2. 예약 생성 (좌석 선점)
-        ReservationResponse res = reservationService.createReservation(principal.user().id(), principal.getUsername(), request);
+        ReservationResponse res = reservationService.createReservation(principal.id(), principal.username(), request);
 
         // 3. 입장용 토큰 쿠키 발급 (예약 선점 성공 시에만)
         String token = tokenService.issueAdmissionToken(
-                String.valueOf(request.eventId()), res.reservationCode(), principal.user().id(),
-                principal.getUsername(), 0L);
+                String.valueOf(request.eventId()), res.reservationCode(), principal.id(),
+                principal.username(), 0L);
 
         ResponseCookie cookie = createAdmissionCookie("admissionToken_" + res.reservationCode(), token,
                 admittedTtlSeconds, "/");
@@ -81,13 +81,13 @@ public class ReservationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "상태 충돌")
     })
     public ApiResponse<ReservationResponse> confirm(
-            @AuthenticationPrincipal CustomUserDetails principal,
+            @LoginUser AuthUserDto principal,
             @PathVariable String code,
             @Parameter(hidden = true) @RequestAttribute(value = "admissionToken") String admissionToken,
             HttpServletResponse response) {
 
         // 1. 예약 확정 (내부에서 토큰 검증 수행)
-        ReservationResponse res = reservationService.confirmReservation(principal.user().id(), code, admissionToken);
+        ReservationResponse res = reservationService.confirmReservation(principal.id(), code, admissionToken);
 
         // 2. 확정 성공 시 쿠키 만료
         ResponseCookie cookie = createAdmissionCookie("admissionToken_" + code, "", 0, "/");
@@ -105,9 +105,9 @@ public class ReservationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "예약 없음")
     })
     public ApiResponse<ReservationResponse> cancel(
-            @AuthenticationPrincipal CustomUserDetails principal,
+            @LoginUser AuthUserDto principal,
             @PathVariable String code) {
-        return ApiResponse.success(reservationService.cancelReservation(principal.user().id(), code));
+        return ApiResponse.success(reservationService.cancelReservation(principal.id(), code));
     }
 
     @GetMapping("/{code}")
@@ -119,9 +119,9 @@ public class ReservationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "예약 없음")
     })
     public ApiResponse<ReservationResponse> getReservation(
-            @AuthenticationPrincipal CustomUserDetails principal,
+            @LoginUser AuthUserDto principal,
             @PathVariable String code) {
-        return ApiResponse.success(reservationService.getReservation(principal.user().id(), code));
+        return ApiResponse.success(reservationService.getReservation(principal.id(), code));
     }
 
     @GetMapping("/my")
@@ -131,8 +131,8 @@ public class ReservationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
     })
     public ApiResponse<List<ReservationResponse>> getMyReservations(
-            @AuthenticationPrincipal CustomUserDetails principal) {
-        return ApiResponse.success(reservationService.getMyReservations(principal.user().id()));
+            @LoginUser AuthUserDto principal) {
+        return ApiResponse.success(reservationService.getMyReservations(principal.id()));
     }
 
     private ResponseCookie createAdmissionCookie(String name, String value, long maxAgeSeconds, String path) {

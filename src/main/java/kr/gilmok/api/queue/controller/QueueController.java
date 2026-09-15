@@ -13,11 +13,11 @@ import kr.gilmok.api.queue.dto.QueueRegisterResponse;
 import kr.gilmok.api.queue.dto.QueueStatusResponse;
 import kr.gilmok.api.queue.service.QueueService;
 import kr.gilmok.common.dto.ApiResponse;
-import kr.gilmok.common.security.CustomUserDetails;
+import kr.gilmok.common.dto.AuthUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import kr.gilmok.common.annotation.LoginUser;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -39,10 +39,10 @@ public class QueueController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "503", description = "Redis 장애")
     })
     public ResponseEntity<ApiResponse<QueueRegisterResponse>> register(
-            @AuthenticationPrincipal CustomUserDetails principal,
+            @LoginUser AuthUserDto principal,
             @Valid @RequestBody QueueRegisterRequest request,
             HttpServletRequest httpRequest) {
-        Long userId = principal.user().id();
+        Long userId = principal.id();
         // PolicyFilter가 정책 조회 결과를 request attribute로 전달 (eventId 미추출·정책 미존재 시 null)
         PolicyCacheDto policy = (PolicyCacheDto) httpRequest.getAttribute(PolicyFilter.POLICY_CACHE_ATTR);
         if (policy == null) {
@@ -61,10 +61,10 @@ public class QueueController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "503", description = "Redis 장애")
     })
     public ResponseEntity<ApiResponse<QueueStatusResponse>> getStatus(
-            @AuthenticationPrincipal CustomUserDetails principal,
+            @LoginUser AuthUserDto principal,
             @RequestParam String eventId,
             @RequestHeader("X-Queue-Key") String queueKey) {
-        QueueStatusResponse response = queueService.getStatus(eventId, queueKey, principal.getUsername(), principal.user().id());
+        QueueStatusResponse response = queueService.getStatus(eventId, queueKey, principal.username(), principal.id());
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 }

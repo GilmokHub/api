@@ -7,10 +7,10 @@ import kr.gilmok.api.ai.dto.AiPolicyRecommendationDto;
 import kr.gilmok.api.ai.dto.ServerSpecRequest;
 import kr.gilmok.api.ai.service.AiPolicyRecommendationService;
 import kr.gilmok.common.dto.ApiResponse;
-import kr.gilmok.common.security.CustomUserDetails;
+import kr.gilmok.common.dto.AuthUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import kr.gilmok.common.annotation.LoginUser;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "Admin AI", description = "관리자 AI 정책 추천 API")
 @SecurityRequirement(name = "bearerAuth")
+@org.springframework.context.annotation.Profile("!test")
 public class AiPolicyRecommendationController {
 
     private final AiPolicyRecommendationService aiService;
@@ -33,9 +34,9 @@ public class AiPolicyRecommendationController {
     public ResponseEntity<ApiResponse<AiPolicyRecommendationDto>> getLiveAiRecommendation(
             @PathVariable Long eventId,
             @RequestBody(required = false) ServerSpecRequest serverSpec, // ✅ 선택적 서버 스펙
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            @LoginUser AuthUserDto principal
     ) {
-        Long adminUserId = userDetails.user().id();
+        Long adminUserId = principal.id();
         AiPolicyRecommendationDto response = aiService.getRecommendation(eventId, adminUserId, serverSpec);
         return ResponseEntity.ok(ApiResponse.success(response));
     }

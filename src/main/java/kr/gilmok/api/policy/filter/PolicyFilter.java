@@ -8,18 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.gilmok.api.policy.dto.PolicyCacheDto;
 import kr.gilmok.api.policy.repository.PolicyCacheRepository;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 import kr.gilmok.api.policy.vo.BlockRules;
-import kr.gilmok.common.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -155,7 +152,7 @@ public class PolicyFilter extends OncePerRequestFilter {
         PolicyCacheDto policy = policyOpt.get();
         String clientIp = getClientIp(wrappedRequest);
         String userAgent = wrappedRequest.getHeader("User-Agent");
-        String clientKey = resolveClientKey(clientIp);
+        String clientKey = resolveClientKey(wrappedRequest, clientIp);
 
         String blockKey = BLOCK_KEY_PREFIX + eventId + ":" + clientKey;
 
@@ -437,10 +434,10 @@ public class PolicyFilter extends OncePerRequestFilter {
         return path.startsWith("/queue/register");
     }
 
-    private String resolveClientKey(String clientIp) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.getPrincipal() instanceof CustomUserDetails details) {
-            return "u:" + details.user().id();
+    private String resolveClientKey(HttpServletRequest request, String clientIp) {
+        String userIdHeader = request.getHeader("X-User-Id");
+        if (userIdHeader != null && !userIdHeader.isBlank()) {
+            return "u:" + userIdHeader.trim();
         }
         return "ip:" + (clientIp != null ? clientIp : "unknown");
     }

@@ -8,12 +8,12 @@ import kr.gilmok.api.policy.dto.PolicyHistoryResponse;
 import kr.gilmok.api.policy.dto.PolicyResponse;
 import kr.gilmok.api.policy.dto.PolicyUpdateRequest;
 import kr.gilmok.api.policy.service.PolicyService;
+import kr.gilmok.common.annotation.LoginUser;
 import kr.gilmok.common.dto.ApiResponse;
-import kr.gilmok.common.security.CustomUserDetails;
+import kr.gilmok.common.dto.AuthUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -60,12 +60,12 @@ public class AdminPolicyController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "동시 수정 충돌")
     })
     public ApiResponse<PolicyResponse> updatePolicy(
-            @AuthenticationPrincipal CustomUserDetails principal,
+            @LoginUser AuthUserDto principal,
             @PathVariable Long eventId,
             @Valid @RequestBody PolicyUpdateRequest request) {
 
-        Long updatedByUserId = principal.user().id();
-        String updatedByUsername = principal.user().username();
+        Long updatedByUserId = principal.id();
+        String updatedByUsername = principal.username();
         PolicyResponse response = policyService.updatePolicy(eventId, request, updatedByUserId, updatedByUsername);
         return ApiResponse.success(response);
     }
@@ -78,12 +78,12 @@ public class AdminPolicyController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "동시 수정 충돌")
     })
     public ApiResponse<PolicyResponse> rollbackPolicy(
-            @AuthenticationPrincipal CustomUserDetails principal,
+            @LoginUser AuthUserDto principal,
             @PathVariable Long eventId,
             @PathVariable Long historyId
     ) {
-        Long rollbackByUserId = principal.user().id();
-        String rollbackByUsername = principal.user().username();
+        Long rollbackByUserId = principal.id();
+        String rollbackByUsername = principal.username();
         PolicyResponse response = policyService.rollbackPolicy(eventId, historyId, rollbackByUserId, rollbackByUsername);
         return ApiResponse.success(response);
     }

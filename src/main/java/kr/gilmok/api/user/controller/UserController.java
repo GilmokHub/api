@@ -8,9 +8,9 @@ import kr.gilmok.api.user.dto.UserEventItemResponse;
 import kr.gilmok.api.user.dto.UserMeResponse;
 import kr.gilmok.api.user.service.UserService;
 import kr.gilmok.common.dto.ApiResponse;
-import kr.gilmok.common.security.CustomUserDetails;
+import kr.gilmok.common.dto.AuthUserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import kr.gilmok.common.annotation.LoginUser;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +30,8 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
     })
-    public ApiResponse<UserMeResponse> getMe(@AuthenticationPrincipal CustomUserDetails principal) {
-        return ApiResponse.success(userService.getMe(principal.user().id(), principal.user().username()));
+    public ApiResponse<UserMeResponse> getMe(@LoginUser AuthUserDto principal) {
+        return ApiResponse.success(userService.getMe(principal.id(), principal.username()));
     }
 
     @GetMapping("/me/dashboard")
@@ -40,7 +40,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
     })
-    public ApiResponse<UserDashboardResponse> getDashboard(@AuthenticationPrincipal CustomUserDetails principal) {
+    public ApiResponse<UserDashboardResponse> getDashboard(@LoginUser AuthUserDto principal) {
         return ApiResponse.success(userService.getDashboard(userId(principal)));
     }
 
@@ -50,11 +50,14 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
     })
-    public ApiResponse<List<UserEventItemResponse>> getMyEvents(@AuthenticationPrincipal CustomUserDetails principal) {
+    public ApiResponse<List<UserEventItemResponse>> getMyEvents(@LoginUser AuthUserDto principal) {
         return ApiResponse.success(userService.getMyEvents(userId(principal)));
     }
 
-    private static Long userId(CustomUserDetails principal) {
-        return principal.user().id();
+    private static Long userId(AuthUserDto principal) {
+        if (principal == null) {
+            throw new kr.gilmok.common.exception.CustomException(kr.gilmok.common.exception.GlobalErrorCode.UNAUTHORIZED);
+        }
+        return principal.id();
     }
 }
