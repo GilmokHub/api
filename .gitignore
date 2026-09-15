@@ -39,16 +39,8 @@ out/
 ### Claude Code ###
 .claude/
 
-### Node / Frontend ###
-node_modules/
-frontend/dist/
-
 ### Environment ###
 application-dev.yml
 
 ### OS ###
 nul
-
-### .env ###
-.env.development
-.env.production

@@ -64,33 +64,6 @@ jobs:
           context: .
           push: true
           tags: ${{ env.IMAGE_NAME }}:latest
-
-      - name: Build and Push Frontend (OCI)
-        if: success() && env.DEPLOY_TARGET == 'oci'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          push: true
-          tags: ${{ env.IMAGE_NAME }}/frontend:latest-oci
-          build-args: |
-            VITE_API_BASE_URL=${{ secrets.OCI_FRONTEND_URL }}
-            VITE_AUTH_BASE_URL=${{ secrets.OCI_FRONTEND_URL }}
-            VITE_GRAFANA_BASE_URL=${{ secrets.OCI_GRAFANA_URL }} 
-            VITE_GRAFANA_DASHBOARD_UID=${{ secrets.VITE_GRAFANA_DASHBOARD_UID }}
-
-      - name: Build and Push Frontend (AWS)
-        if: success() && env.DEPLOY_TARGET == 'aws'
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          push: true
-          tags: ${{ env.IMAGE_NAME }}/frontend:latest-aws
-          build-args: |
-            VITE_API_BASE_URL=${{ secrets.AWS_FRONTEND_URL }}
-            VITE_AUTH_BASE_URL=${{ secrets.AWS_FRONTEND_URL }}
-            VITE_GRAFANA_BASE_URL=${{ secrets.OCI_GRAFANA_URL }}   
-            VITE_GRAFANA_DASHBOARD_UID=${{ secrets.VITE_GRAFANA_DASHBOARD_UID }}
-
       - name: Trigger Deploy Repo (Backend)
         if: success()
         uses: peter-evans/repository-dispatch@v3
@@ -99,12 +72,3 @@ jobs:
           repository: final-project-gilmok/deploy-repo
           event-type: update-image
           client-payload: '{"image_tag": "latest", "service_name": "api-server", "target": "${{ env.DEPLOY_TARGET }}"}'
-
-      - name: Trigger Deploy Repo (Frontend)
-        if: success()
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.GITOPS_TOKEN }}
-          repository: final-project-gilmok/deploy-repo
-          event-type: update-image
-          client-payload: '{"image_tag": "latest-${{ env.DEPLOY_TARGET }}", "service_name": "frontend-server", "target": "${{ env.DEPLOY_TARGET }}"}'
