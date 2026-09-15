@@ -17,7 +17,7 @@ public class JwtProvider {
 
     private final SecretKey key;
 
-    public JwtProvider(@Value("${app.jwt.secret}") String secret) {
+    public JwtProvider(@Value("${app.jwt.secret:default-secret-key-for-jwt-provider-123456789}") String secret) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 

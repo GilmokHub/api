@@ -13,7 +13,7 @@ public class TokenService {
 
     private final JwtProvider jwtProvider;
 
-    @Value("${app.admitted-ttl-seconds}")
+    @Value("${queue.admitted-ttl-seconds}")
     private long admittedTtlSeconds;
 
     // 대기열 통과자에게 발급할 입장용 토큰 생성
