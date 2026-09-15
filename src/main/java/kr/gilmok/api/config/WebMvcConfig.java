@@ -27,4 +27,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(admissionTokenInterceptor)
                 .addPathPatterns("/reservations/*/confirm");
     }
+    @Override
+    public void addArgumentResolvers(java.util.List<org.springframework.web.method.support.HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new kr.gilmok.common.resolver.LoginUserArgumentResolver());
+    }
 }
