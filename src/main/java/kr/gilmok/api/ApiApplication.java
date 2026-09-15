@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableRetry
 @EnableScheduling
-@EnableJpaAuditing
 @SpringBootApplication(scanBasePackages = {"kr.gilmok.api", "kr.gilmok.common"})
 public class ApiApplication {
 

@@ -26,3 +26,7 @@ queue:
   admitted-ttl-seconds: 300
   grace-period-seconds: 180
   default-event-id: default
+
+metrics:
+  prometheus:
+    url: http://localhost:9090

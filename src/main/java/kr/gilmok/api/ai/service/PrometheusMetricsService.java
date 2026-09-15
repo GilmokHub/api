@@ -21,15 +21,8 @@ public class PrometheusMetricsService {
                                     RestClient.Builder restClientBuilder,
                                     ObjectMapper objectMapper) {
 
-        // 1. HTTP 타임아웃 팩토리 생성 (연결 3초, 읽기 5초)
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(Duration.ofSeconds(3));
-        factory.setReadTimeout(Duration.ofSeconds(5));
-
-        // 2. RestClient 빌더에 팩토리 주입
         this.restClient = restClientBuilder
                 .baseUrl(prometheusUrl)
-                .requestFactory(factory) // 💡 타임아웃 적용
                 .build();
 
         this.objectMapper = objectMapper;

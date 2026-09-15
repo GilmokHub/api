@@ -14,6 +14,9 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+import org.springframework.test.context.TestPropertySource;
+
+@TestPropertySource(properties = "metrics.prometheus.url=http://localhost:9090")
 @RestClientTest(PrometheusMetricsService.class)
 class PrometheusMetricsServiceTest {
 
@@ -46,7 +49,7 @@ class PrometheusMetricsServiceTest {
                 """;
 
         // 💡 [수정] 복잡한 쿼리 파라미터 검증 대신, API 경로 시작점만 맞으면 OK 처리
-        mockServer.expect(requestTo(startsWith("http://localhost:9090/api/query")))
+        mockServer.expect(requestTo(startsWith("http://localhost:9090/api/v1/query")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(mockPrometheusResponse, MediaType.APPLICATION_JSON));
 
@@ -66,7 +69,7 @@ class PrometheusMetricsServiceTest {
                 { "status": "success", "data": { "result": [] } }
                 """;
 
-        mockServer.expect(requestTo(startsWith("http://localhost:9090/api/query")))
+        mockServer.expect(requestTo(startsWith("http://localhost:9090/api/v1/query")))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(emptyResponse, MediaType.APPLICATION_JSON));
 
