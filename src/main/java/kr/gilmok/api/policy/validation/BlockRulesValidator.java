@@ -2,7 +2,7 @@ package kr.gilmok.api.policy.validation;
 
 import kr.gilmok.api.policy.exception.PolicyErrorCode;
 import kr.gilmok.api.policy.vo.BlockRules;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 
 import java.util.Set;
 import java.util.regex.Pattern;

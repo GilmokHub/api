@@ -8,7 +8,7 @@ import kr.gilmok.api.event.entity.EventStatus;
 import kr.gilmok.api.event.repository.EventRepository;
 import kr.gilmok.api.event.exception.EventErrorCode;
 import kr.gilmok.api.policy.service.PolicyService;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

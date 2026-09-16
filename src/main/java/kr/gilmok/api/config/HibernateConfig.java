@@ -5,9 +5,11 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.orm.hibernate5.SpringBeanContainer;
 
 @Configuration
+@EnableJpaAuditing
 public class HibernateConfig {
 
     @Bean

@@ -3,7 +3,7 @@ package kr.gilmok.api.config;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import kr.gilmok.api.queue.exception.QueueErrorCode;
-import kr.gilmok.common.dto.ErrorResponse;
+import kr.gilmok.api.global.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;

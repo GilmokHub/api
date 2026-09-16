@@ -6,7 +6,7 @@ import kr.gilmok.api.event.dto.EventListResponse;
 import kr.gilmok.api.event.service.EventService;
 import kr.gilmok.api.reservation.dto.SeatResponse;
 import kr.gilmok.api.reservation.service.SeatService;
-import kr.gilmok.common.dto.ApiResponse;
+import kr.gilmok.api.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

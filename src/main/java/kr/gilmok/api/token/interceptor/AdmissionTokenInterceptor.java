@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.gilmok.api.token.exception.AdmissionTokenErrorCode;
 import kr.gilmok.api.token.repository.AdmissionTokenBlocklistRepository;
 import kr.gilmok.api.token.service.JwtProvider;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;

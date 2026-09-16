@@ -70,7 +70,7 @@ resilience4j:
         wait-duration-in-open-state: 10s
         permitted-number-of-calls-in-half-open-state: 2
         ignore-exceptions:
-          - kr.gilmok.common.exception.CustomException
+          - kr.gilmok.api.global.exception.CustomException
           - java.lang.IllegalArgumentException
       redis-queue-verify:
         # verifyQueueAccess() 단독 사용
@@ -79,4 +79,4 @@ resilience4j:
         wait-duration-in-open-state: 10s
         permitted-number-of-calls-in-half-open-state: 2
         ignore-exceptions:
-          - kr.gilmok.common.exception.CustomException
+          - kr.gilmok.api.global.exception.CustomException

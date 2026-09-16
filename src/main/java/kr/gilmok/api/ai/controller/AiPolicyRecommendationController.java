@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.gilmok.api.ai.dto.AiPolicyRecommendationDto;
 import kr.gilmok.api.ai.dto.ServerSpecRequest;
 import kr.gilmok.api.ai.service.AiPolicyRecommendationService;
-import kr.gilmok.common.dto.ApiResponse;
-import kr.gilmok.common.security.CustomUserDetails;
+import kr.gilmok.api.global.dto.ApiResponse;
+import kr.gilmok.api.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@org.springframework.context.annotation.Profile("!test")
 @Tag(name = "Admin AI", description = "관리자 AI 정책 추천 API")
 @SecurityRequirement(name = "bearerAuth")
 public class AiPolicyRecommendationController {

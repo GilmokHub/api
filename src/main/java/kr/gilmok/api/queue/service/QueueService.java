@@ -12,7 +12,7 @@ import kr.gilmok.api.queue.dto.QueueStatusResponse;
 import kr.gilmok.api.queue.exception.QueueErrorCode;
 import kr.gilmok.api.policy.dto.PolicyCacheDto;
 import kr.gilmok.api.queue.repository.QueueRedisRepository;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

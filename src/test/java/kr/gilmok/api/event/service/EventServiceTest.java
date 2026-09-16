@@ -7,7 +7,7 @@ import kr.gilmok.api.event.entity.EventStatus;
 import kr.gilmok.api.event.repository.EventRepository;
 import kr.gilmok.api.event.exception.EventErrorCode;
 import kr.gilmok.api.policy.service.PolicyService;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

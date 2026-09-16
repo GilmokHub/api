@@ -5,7 +5,7 @@ import jakarta.servlet.http.Cookie;
 import kr.gilmok.api.token.exception.AdmissionTokenErrorCode;
 import kr.gilmok.api.token.repository.AdmissionTokenBlocklistRepository;
 import kr.gilmok.api.token.service.JwtProvider;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

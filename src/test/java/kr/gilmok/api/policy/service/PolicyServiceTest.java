@@ -12,7 +12,7 @@ import kr.gilmok.api.policy.exception.PolicyErrorCode;
 import kr.gilmok.api.policy.repository.PolicyCacheRepository;
 import kr.gilmok.api.policy.repository.PolicyHistoryRepository;
 import kr.gilmok.api.policy.repository.PolicyRepository;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 import kr.gilmok.api.policy.vo.BlockRules;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -302,7 +302,7 @@ class PolicyServiceTest {
                     .isInstanceOf(CustomException.class)
                     .satisfies(ex -> assertThat(((CustomException) ex).getErrorCode())
                             .isEqualTo(EventErrorCode.EVENT_NOT_FOUND));
-            verify(historyRepository, never()).findByEventIdOrderByCreatedAtDesc(anyLong(), any());
+            verify(historyRepository, never()).findByEventIdOrderByCreatedAtDescIdDesc(anyLong(), any());
         }
 
         @Test
@@ -324,7 +324,7 @@ class PolicyServiceTest {
                     .build();
             Page<PolicyHistory> page = new PageImpl<>(List.of(h), PageRequest.of(0, 20), 1);
             when(eventRepository.existsById(eventId)).thenReturn(true);
-            when(historyRepository.findByEventIdOrderByCreatedAtDesc(eq(eventId), any(PageRequest.class)))
+            when(historyRepository.findByEventIdOrderByCreatedAtDescIdDesc(eq(eventId), any(PageRequest.class)))
                     .thenReturn(page);
 
             Page<PolicyHistoryResponse> result = policyService.getPolicyHistories(eventId, PageRequest.of(0, 20));
@@ -334,7 +334,7 @@ class PolicyServiceTest {
             assertThat(result.getContent().get(0).id()).isEqualTo(1L);
             assertThat(result.getContent().get(0).eventId()).isEqualTo(eventId);
             assertThat(result.getContent().get(0).admissionRps()).isEqualTo(10);
-            verify(historyRepository).findByEventIdOrderByCreatedAtDesc(eq(eventId), any(PageRequest.class));
+            verify(historyRepository).findByEventIdOrderByCreatedAtDescIdDesc(eq(eventId), any(PageRequest.class));
         }
     }
 

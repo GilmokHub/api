@@ -1,7 +1,7 @@
 package kr.gilmok.api.ai.dto;
 
 import kr.gilmok.api.ai.entity.AiErrorCode;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 
 import java.util.stream.Stream;
 

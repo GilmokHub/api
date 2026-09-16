@@ -8,7 +8,7 @@ import kr.gilmok.api.ai.entity.AiErrorCode;
 import kr.gilmok.api.ai.entity.AiRecommendation;
 import kr.gilmok.api.ai.repository.AiRecommendationRepository;
 import kr.gilmok.api.queue.service.QueueService;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
