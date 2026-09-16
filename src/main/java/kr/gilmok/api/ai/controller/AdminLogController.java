@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.gilmok.api.ai.entity.RequestLog;
 import kr.gilmok.api.ai.repository.RequestLogRepository;
-import kr.gilmok.common.dto.ApiResponse;
+import kr.gilmok.api.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

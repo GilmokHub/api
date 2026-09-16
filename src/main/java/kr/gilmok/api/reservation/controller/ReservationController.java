@@ -11,8 +11,8 @@ import kr.gilmok.api.reservation.dto.ReservationCreateRequest;
 import kr.gilmok.api.reservation.dto.ReservationResponse;
 import kr.gilmok.api.reservation.service.ReservationService;
 import kr.gilmok.api.token.service.TokenService;
-import kr.gilmok.common.dto.ApiResponse;
-import kr.gilmok.common.security.CustomUserDetails;
+import kr.gilmok.api.global.dto.ApiResponse;
+import kr.gilmok.api.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +33,7 @@ public class ReservationController {
     private final QueueService queueService;
     private final TokenService tokenService;
 
-    @Value("${app.admitted-ttl-seconds}")
+    @Value("${app.admitted-ttl-seconds:300}")
     private long admittedTtlSeconds;
 
     @PostMapping

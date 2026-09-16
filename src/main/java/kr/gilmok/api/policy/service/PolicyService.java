@@ -15,7 +15,7 @@ import kr.gilmok.api.policy.repository.PolicyCacheRepository;
 import kr.gilmok.api.policy.repository.PolicyHistoryRepository;
 import kr.gilmok.api.policy.repository.PolicyRepository;
 import kr.gilmok.api.policy.validation.BlockRulesValidator;
-import kr.gilmok.common.exception.CustomException;
+import kr.gilmok.api.global.exception.CustomException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;

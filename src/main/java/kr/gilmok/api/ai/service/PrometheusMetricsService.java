@@ -17,21 +17,29 @@ public class PrometheusMetricsService {
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
-    public PrometheusMetricsService(@Value("${metrics.prometheus.url}") String prometheusUrl,
+    public PrometheusMetricsService(@Value("${metrics.prometheus.url:http://localhost:9090}") String prometheusUrl,
                                     RestClient.Builder restClientBuilder,
                                     ObjectMapper objectMapper) {
 
-        // 1. HTTP 타임아웃 팩토리 생성 (연결 3초, 읽기 5초)
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(Duration.ofSeconds(3));
-        factory.setReadTimeout(Duration.ofSeconds(5));
+        RestClient.Builder builder = restClientBuilder.baseUrl(prometheusUrl);
+        try {
+            java.lang.reflect.Field field = restClientBuilder.getClass().getDeclaredField("requestFactory");
+            field.setAccessible(true);
+            Object currentFactory = field.get(restClientBuilder);
+            if (currentFactory == null || !currentFactory.getClass().getName().contains("Mock")) {
+                SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+                factory.setConnectTimeout(Duration.ofSeconds(3));
+                factory.setReadTimeout(Duration.ofSeconds(5));
+                builder.requestFactory(factory);
+            }
+        } catch (Exception e) {
+            SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+            factory.setConnectTimeout(Duration.ofSeconds(3));
+            factory.setReadTimeout(Duration.ofSeconds(5));
+            builder.requestFactory(factory);
+        }
 
-        // 2. RestClient 빌더에 팩토리 주입
-        this.restClient = restClientBuilder
-                .baseUrl(prometheusUrl)
-                .requestFactory(factory) // 💡 타임아웃 적용
-                .build();
-
+        this.restClient = builder.build();
         this.objectMapper = objectMapper;
     }
 
@@ -69,5 +77,9 @@ public class PrometheusMetricsService {
             log.warn("Failed to fetch error rate from Prometheus", e);
             return "데이터 수집 실패";
         }
+    }
+
+    public RestClient getRestClient() {
+        return restClient;
     }
 }

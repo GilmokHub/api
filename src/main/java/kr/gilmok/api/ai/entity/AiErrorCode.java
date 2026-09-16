@@ -1,6 +1,6 @@
 package kr.gilmok.api.ai.entity;
 
-import kr.gilmok.common.exception.ErrorCode;
+import kr.gilmok.api.global.exception.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

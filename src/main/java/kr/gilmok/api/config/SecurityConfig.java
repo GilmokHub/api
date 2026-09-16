@@ -2,10 +2,10 @@ package kr.gilmok.api.config;
 
 import jakarta.servlet.Filter;
 import kr.gilmok.api.policy.filter.PolicyFilter;
-import kr.gilmok.common.security.AccessTokenBlocklistFilter;
-import kr.gilmok.common.security.CommonSecurityConfig;
-import kr.gilmok.common.filter.JwtAuthenticationFilter;
-import kr.gilmok.common.security.CustomAuthenticationEntryPoint;
+import kr.gilmok.api.global.security.AccessTokenBlocklistFilter;
+import kr.gilmok.api.global.security.CommonSecurityConfig;
+import kr.gilmok.api.global.security.JwtAuthenticationFilter;
+import kr.gilmok.api.global.security.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.gilmok.api.policy.dto.PolicyCacheDto;
 import kr.gilmok.api.policy.repository.PolicyCacheRepository;
 import kr.gilmok.api.policy.vo.BlockRules;
-import kr.gilmok.common.security.CustomUserDetails;
+import kr.gilmok.api.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

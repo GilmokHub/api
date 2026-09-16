@@ -1,6 +1,6 @@
 package kr.gilmok.api.reservation.exception;
 
-import kr.gilmok.common.exception.ErrorCode;
+import kr.gilmok.api.global.exception.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

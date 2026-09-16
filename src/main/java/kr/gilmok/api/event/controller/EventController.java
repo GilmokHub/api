@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import kr.gilmok.api.event.dto.EventCreateRequest;
 import kr.gilmok.api.event.dto.EventResponse;
 import kr.gilmok.api.event.service.EventService;
-import kr.gilmok.common.dto.ApiResponse;
+import kr.gilmok.api.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
