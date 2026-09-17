@@ -38,7 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         AccessTokenBlocklistFilter.class,
                         JwtAuthenticationFilter.class,
                         QueueRateLimitInterceptor.class,
-                        AdmissionTokenInterceptor.class
+                        AdmissionTokenInterceptor.class,
+                        kr.gilmok.api.queue.filter.QueueLoggingFilter.class
                 }
         ))
 @AutoConfigureMockMvc(addFilters = false)
