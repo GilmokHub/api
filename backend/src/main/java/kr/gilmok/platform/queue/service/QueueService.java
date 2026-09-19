@@ -12,6 +12,7 @@ import kr.gilmok.platform.queue.dto.QueueStatusResponse;
 import kr.gilmok.platform.queue.exception.QueueErrorCode;
 import kr.gilmok.platform.policy.dto.PolicyCacheDto;
 import kr.gilmok.platform.queue.repository.QueueRedisRepository;
+import kr.gilmok.platform.token.service.TokenService;
 import kr.gilmok.platform.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class QueueService {
 
     private final QueueRedisRepository queueRedisRepository;
     private final MeterRegistry meterRegistry;
+    private final TokenService tokenService;
 
     private final Map<String, AtomicLong> waitingQueueSizes = new ConcurrentHashMap<>();
     private final Map<String, AtomicLong> admittedQueueSizes = new ConcurrentHashMap<>();
@@ -137,7 +139,8 @@ public class QueueService {
         long admitCountInWindow = r.get(3);
 
         if (statusCode == 1) {
-            return new QueueStatusResponse(QueueStatus.ADMITTABLE, 0, 0, 0, 0, null);
+            String token = tokenService.issueAdmissionToken(eventId, null, userId, (username != null ? username : "user"), rank);
+            return new QueueStatusResponse(QueueStatus.ADMITTABLE, 0, 0, 0, 1000, token);
         }
 
         if (statusCode == 2) {
