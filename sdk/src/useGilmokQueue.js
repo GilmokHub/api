@@ -51,7 +51,7 @@ export function useGilmokQueue(optionsOrClientKey, legacyQueueUrl) {
           userId: String(currentUserId ?? 0)
         });
 
-        const res = await fetch(`${queueUrl}/api/v1/queue/status?${queryParams.toString()}`, {
+        const res = await fetch(`${queueUrl}/gilmok-platform/queue/status?${queryParams.toString()}`, {
           credentials: 'omit'
         });
 
@@ -126,7 +126,7 @@ export function useGilmokQueue(optionsOrClientKey, legacyQueueUrl) {
     setCurrentUserId(userId);
 
     try {
-      const res = await fetch(`${queueUrl}/api/v1/queue/enter`, {
+      const res = await fetch(`${queueUrl}/gilmok-platform/queue/enter`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

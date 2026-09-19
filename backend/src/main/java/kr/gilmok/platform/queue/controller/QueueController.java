@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping({"/api/v1/queue", "/queue"})
+@RequestMapping("/queue")
 @RequiredArgsConstructor
 @Tag(name = "Queue", description = "대기열 API")
 public class QueueController {
@@ -36,7 +36,7 @@ public class QueueController {
      * - 평상시 (ROUTING_DISABLED): 대기열 Redis 적재 없이 즉시 입장 토큰 발급 (0초 통과)
      * - 트래픽 집중 시 (ROUTING_ENABLED): Redis Sorted Set 대기열 등록 후 순번 반환
      */
-    @PostMapping({"/enter", "/register"})
+    @PostMapping("/enter")
     @Operation(summary = "대기열 진입", description = "고객사 식별키(clientKey)와 eventId로 대기열에 진입하거나 평상시 즉시 통과합니다.")
     public ResponseEntity<ApiResponse<QueueEnterResponse>> enter(
             @AuthenticationPrincipal CustomUserDetails principal,

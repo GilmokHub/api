@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/v1/queue/**").permitAll()
+                        .requestMatchers("/queue/**").permitAll()
                         .requestMatchers("/events/**").permitAll()
                         .requestMatchers("/actuator/prometheus").permitAll()
                         .requestMatchers("/actuator/health").permitAll()

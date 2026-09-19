@@ -44,10 +44,8 @@ import java.util.regex.PatternSyntaxException;
 @RequiredArgsConstructor
 public class PolicyFilter extends OncePerRequestFilter {
 
-    private static final String QUEUE_PATH_PREFIX = "/api/v1/queue/";
-    private static final String QUEUE_REGISTER_PATH = "/api/v1/queue/enter";
-    private static final String LEGACY_QUEUE_PATH_PREFIX = "/queue/";
-    private static final String LEGACY_QUEUE_REGISTER_PATH = "/queue/register";
+    private static final String QUEUE_PATH_PREFIX = "/queue/";
+    private static final String QUEUE_REGISTER_PATH = "/queue/enter";
 
     /** PolicyFilter → Controller 간 정책 전달용 request attribute 키 */
     public static final String POLICY_CACHE_ATTR = "policyCache";
@@ -124,8 +122,8 @@ public class PolicyFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getRequestURI();
-        if (path == null || (!path.startsWith(QUEUE_PATH_PREFIX) && !path.startsWith(LEGACY_QUEUE_PATH_PREFIX))) {
+        String path = resolvePath(request);
+        if (!path.startsWith(QUEUE_PATH_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -231,8 +229,7 @@ public class PolicyFilter extends OncePerRequestFilter {
         Long fromQuery = parseEventIdParam(request.getParameter("eventId"));
 
         boolean isPostWithBody = "POST".equalsIgnoreCase(request.getMethod())
-                && request.getRequestURI() != null
-                && (request.getRequestURI().startsWith(QUEUE_REGISTER_PATH) || request.getRequestURI().startsWith(LEGACY_QUEUE_REGISTER_PATH));
+                && resolvePath(request).startsWith(QUEUE_REGISTER_PATH);
 
         Long fromBody = null;
         if (isPostWithBody && request instanceof CachedBodyHttpServletRequestWrapper wrapper) {
@@ -432,11 +429,26 @@ public class PolicyFilter extends OncePerRequestFilter {
         }
     }
 
+    private String resolvePath(HttpServletRequest request) {
+        String servletPath = request.getServletPath();
+        if (servletPath != null && !servletPath.isEmpty()) {
+            return servletPath;
+        }
+        String uri = request.getRequestURI();
+        if (uri == null) {
+            return "";
+        }
+        if (uri.startsWith("/gilmok-platform")) {
+            return uri.substring("/gilmok-platform".length());
+        }
+        return uri;
+    }
+
     private boolean isSensitivePath(String path) {
         if (path == null) {
             return false;
         }
-        return path.startsWith("/queue/register");
+        return path.startsWith(QUEUE_REGISTER_PATH);
     }
 
     private String resolveClientKey(String clientIp) {

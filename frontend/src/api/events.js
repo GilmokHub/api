@@ -1,9 +1,9 @@
 import { api } from './client'
 
 export function getEvents() {
-  return api.get('/admin/events')
+  return api.get('/gilmok-platform/admin/events')
 }
 
 export function getEvent(eventId) {
-  return api.get(`/admin/events/${eventId}`)
+  return api.get(`/gilmok-platform/admin/events/${eventId}`)
 }
