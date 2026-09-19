@@ -9,7 +9,7 @@ export default defineConfig(({mode}) => {
     }
 
     // 길목 대기열 플랫폼 코어 서버 (backend) - 포트 8082
-    const queueServerProxy = {
+    const platformServerProxy = {
         target: env.VITE_QUEUE_API_URL || 'http://localhost:8082',
         changeOrigin: true,
         bypass: bypassHtml,
@@ -28,7 +28,7 @@ export default defineConfig(({mode}) => {
             port: 3031,
             proxy: {
                 // 1. 길목 대기열 플랫폼 전용 엔드포인트 (:8082, context-path: /gilmok-platform)
-                '/gilmok-platform': queueServerProxy,
+                '/gilmok-platform': platformServerProxy,
 
                 // 2. 공연 및 좌석 정보 (고객사 데모 백엔드 :8081)
                 '/admin/events': demoBackendProxy,
