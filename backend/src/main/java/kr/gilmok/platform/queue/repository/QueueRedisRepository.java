@@ -276,9 +276,14 @@ public class QueueRedisRepository {
     }
 
     public java.util.Set<String> getActiveQueueIds() {
-        java.util.Set<String> keys = redisTemplate.keys("queue:*:wait");
+        java.util.Set<String> keys = redisTemplate.keys("queue:*");
         if (keys == null) return java.util.Collections.emptySet();
         return keys.stream()
+                .filter(k -> {
+                    String[] parts = k.split(":");
+                    // "queue"와 "eventId" 2개 파트로만 구성된 대기열 ZSET 키만 필터링 (예: queue:1)
+                    return parts.length == 2;
+                })
                 .map(k -> k.split(":")[1])
                 .collect(java.util.stream.Collectors.toSet());
     }

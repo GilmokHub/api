@@ -44,8 +44,10 @@ import java.util.regex.PatternSyntaxException;
 @RequiredArgsConstructor
 public class PolicyFilter extends OncePerRequestFilter {
 
-    private static final String QUEUE_PATH_PREFIX = "/queue/";
-    private static final String QUEUE_REGISTER_PATH = "/queue/register";
+    private static final String QUEUE_PATH_PREFIX = "/api/v1/queue/";
+    private static final String QUEUE_REGISTER_PATH = "/api/v1/queue/enter";
+    private static final String LEGACY_QUEUE_PATH_PREFIX = "/queue/";
+    private static final String LEGACY_QUEUE_REGISTER_PATH = "/queue/register";
 
     /** PolicyFilter → Controller 간 정책 전달용 request attribute 키 */
     public static final String POLICY_CACHE_ATTR = "policyCache";
@@ -123,7 +125,7 @@ public class PolicyFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String path = request.getRequestURI();
-        if (path == null || !path.startsWith(QUEUE_PATH_PREFIX)) {
+        if (path == null || (!path.startsWith(QUEUE_PATH_PREFIX) && !path.startsWith(LEGACY_QUEUE_PATH_PREFIX))) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -230,7 +232,7 @@ public class PolicyFilter extends OncePerRequestFilter {
 
         boolean isPostWithBody = "POST".equalsIgnoreCase(request.getMethod())
                 && request.getRequestURI() != null
-                && request.getRequestURI().startsWith(QUEUE_REGISTER_PATH);
+                && (request.getRequestURI().startsWith(QUEUE_REGISTER_PATH) || request.getRequestURI().startsWith(LEGACY_QUEUE_REGISTER_PATH));
 
         Long fromBody = null;
         if (isPostWithBody && request instanceof CachedBodyHttpServletRequestWrapper wrapper) {
