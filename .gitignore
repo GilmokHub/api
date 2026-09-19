@@ -44,3 +44,11 @@ application-dev.yml
 
 ### OS ###
 nul
+
+### AI Agent & Documentation ###
+.agents
+docs/
+
+### Vite Cache ###
+.vite/
+**/frontend/.vite/
