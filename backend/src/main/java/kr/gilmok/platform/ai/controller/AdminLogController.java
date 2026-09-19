@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/logs")
+@RequestMapping("/gilmok-platform/admin/logs")
 @RequiredArgsConstructor
 @Tag(name = "Admin Log", description = "관리자 AI 요청 로그 조회 API")
 @SecurityRequirement(name = "bearerAuth")

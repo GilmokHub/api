@@ -82,7 +82,7 @@ class PolicyFilterTest {
                 policyEnforceScript
         );
 
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/queue/register");
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/gilmok-platform/queue/enter");
         request.setParameter("eventId", "1");
         request.addHeader("User-Agent", "Mozilla/5.0");
         request.setRemoteAddr("127.0.0.1");

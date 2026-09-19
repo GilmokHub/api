@@ -53,7 +53,7 @@ public class SwaggerConfig {
     public GroupedOpenApi adminApi() {
         return GroupedOpenApi.builder()
                 .group("admin")
-                .pathsToMatch("/admin/**")
+                .pathsToMatch("/gilmok-platform/admin/**")
                 .build();
     }
 
@@ -61,7 +61,7 @@ public class SwaggerConfig {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("public")
-                .pathsToMatch("/users/**", "/reservations/**", "/queue/**", "/events/**")
+                .pathsToMatch("/gilmok-platform/queue/**")
                 .build();
     }
 
