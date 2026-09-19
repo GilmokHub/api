@@ -52,3 +52,6 @@ docs/
 ### Vite Cache ###
 .vite/
 **/frontend/.vite/
+
+### Benchmark Scripts & Logs ###
+benchmark/
