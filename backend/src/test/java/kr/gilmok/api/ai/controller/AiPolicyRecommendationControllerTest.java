@@ -3,7 +3,6 @@ package kr.gilmok.api.ai.controller;
 import kr.gilmok.api.ai.dto.AiPolicyRecommendationDto;
 import kr.gilmok.api.ai.service.AiPolicyRecommendationService;
 import kr.gilmok.api.global.dto.AuthUserDto;
-import kr.gilmok.api.global.security.AccessTokenBlocklistFilter;
 import kr.gilmok.api.global.security.CustomUserDetails;
 import kr.gilmok.api.global.security.JwtAuthenticationFilter;
 
@@ -35,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                         kr.gilmok.api.config.SecurityConfig.class,
                         kr.gilmok.api.config.WebMvcConfig.class,
                         kr.gilmok.api.policy.filter.PolicyFilter.class,
-                        AccessTokenBlocklistFilter.class,
                         JwtAuthenticationFilter.class,
                         QueueRateLimitInterceptor.class,
                         AdmissionTokenInterceptor.class,

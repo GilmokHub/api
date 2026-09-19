@@ -2,7 +2,6 @@ package kr.gilmok.platform.config;
 
 import jakarta.servlet.Filter;
 import kr.gilmok.platform.policy.filter.PolicyFilter;
-import kr.gilmok.platform.global.security.AccessTokenBlocklistFilter;
 import kr.gilmok.platform.global.security.CommonSecurityConfig;
 import kr.gilmok.platform.global.security.JwtAuthenticationFilter;
 import kr.gilmok.platform.global.security.CustomAuthenticationEntryPoint;
@@ -18,20 +17,17 @@ import java.util.List;
 public class SecurityConfig extends CommonSecurityConfig {
 
     private final PolicyFilter policyFilter;
-    private final AccessTokenBlocklistFilter accessTokenBlocklistFilter;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
-            PolicyFilter policyFilter,
-            AccessTokenBlocklistFilter accessTokenBlocklistFilter) {
+            PolicyFilter policyFilter) {
         super(jwtAuthenticationFilter, customAuthenticationEntryPoint);
         this.policyFilter = policyFilter;
-        this.accessTokenBlocklistFilter = accessTokenBlocklistFilter;
     }
 
     @Override
     protected List<Filter> getFiltersAfterJwtAuthentication() {
-        return List.of(accessTokenBlocklistFilter, policyFilter);
+        return List.of(policyFilter);
     }
 
     @Override
