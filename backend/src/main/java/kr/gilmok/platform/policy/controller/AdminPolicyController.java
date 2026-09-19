@@ -17,7 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/gilmok-platform/admin/events/{eventId}")
+@RequestMapping("/admin/events/{eventId}")
 @RequiredArgsConstructor
 @Tag(name = "Admin Policy", description = "관리자 이벤트 정책 관리 API")
 @SecurityRequirement(name = "bearerAuth")

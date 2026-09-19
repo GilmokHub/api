@@ -14,7 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/gilmok-platform/admin")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
 @org.springframework.context.annotation.Profile("!test")
 @Tag(name = "Admin AI", description = "관리자 AI 정책 추천 API")

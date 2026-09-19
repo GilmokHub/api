@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/gilmok-platform/queue")
+@RequestMapping("/queue")
 @RequiredArgsConstructor
 @Tag(name = "Queue", description = "대기열 API")
 public class QueueController {

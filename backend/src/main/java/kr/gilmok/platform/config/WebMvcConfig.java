@@ -21,7 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         if (queueRateLimitInterceptor != null) {
             registry.addInterceptor(queueRateLimitInterceptor)
-                    .addPathPatterns("/gilmok-platform/queue/**");
+                    .addPathPatterns("/queue/**");
         }
 
         registry.addInterceptor(admissionTokenInterceptor)
