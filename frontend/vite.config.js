@@ -1,7 +1,7 @@
-import { defineConfig, loadEnv } from 'vite'
+import {defineConfig, loadEnv} from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({mode}) => {
     const env = loadEnv(mode, process.cwd(), '')
 
     const bypassHtml = (req) => {
@@ -27,19 +27,11 @@ export default defineConfig(({ mode }) => {
         server: {
             port: 3031,
             proxy: {
-                // 1. 길목 대기열 플랫폼 전용 엔드포인트 (:8082)
-                '/admin/logs': queueServerProxy,
-                '/queue': queueServerProxy,
-                '/policy': queueServerProxy,
-                '^/admin/events/[^/]+/policy': queueServerProxy,
-                '^/admin/events/[^/]+/recommendation': queueServerProxy,
+                // 1. 길목 대기열 플랫폼 전용 엔드포인트 (:8082, context-path: /gilmok-platform)
+                '/gilmok-platform': queueServerProxy,
 
-                // 2. 공연 및 좌석 정보 (고객사 백엔드 :8081)
+                // 2. 공연 및 좌석 정보 (고객사 데모 백엔드 :8081)
                 '/admin/events': demoBackendProxy,
-
-                // 3. 기본 기타 관리자/API 요청
-                '/admin': queueServerProxy,
-                '/api': queueServerProxy,
             },
         },
     }
